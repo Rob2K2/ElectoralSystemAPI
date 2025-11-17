@@ -3,16 +3,16 @@
     using ElectoralSystem.API.Error;
     using ElectoralSystem.API.Error.Bussiness;
     using ElectoralSystem.API.Error.Critical;
+    using ElectoralSystem.API.Error.Logs;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.Extensions.Logging;
     
 
     public class ErrorFilter : IActionFilter, IExceptionFilter
     {
-        private readonly ILogger<ErrorFilter> _logger;
+        private readonly ILogger _logger;
 
-        public ErrorFilter(ILogger<ErrorFilter> logger)
+        public ErrorFilter(ILogger logger)
         {
             _logger = logger;
         }
@@ -20,13 +20,13 @@
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var actionName = context.ActionDescriptor.DisplayName;
-            _logger.LogInformation($"[START] Action: {actionName}");
+            _logger.Log(Severity.INFORMATION, $"[START] Action: {actionName}");
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
             var actionName = context.ActionDescriptor.DisplayName;
-            _logger.LogInformation($"[END] Action: {actionName}");
+            _logger.Log(Severity.INFORMATION, $"[END] Action: {actionName}");
         }
 
         public void OnException(ExceptionContext context)

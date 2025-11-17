@@ -35,7 +35,6 @@ namespace ElectoralSystem.API.Repository.Repositories
 
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> lambda)
         {
-            lambda.Compile();
             return await _context.Set<T>().AsNoTracking().Where(lambda).ToListAsync();
         }
 

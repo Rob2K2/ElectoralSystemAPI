@@ -18,8 +18,6 @@ builder.Services.AddControllers(
     options => options.Filters.Add<ErrorFilter>()    
 );
 
-builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -40,8 +38,9 @@ builder.Services.AddMediatR(config =>
 
 builder.Services.AddAutoMapper(config =>
     {
-        config.CreateMap<PoliticalParty, PoliticalPartyDto>();
-        config.CreateMap<PoliticalPartyDto, PoliticalParty>();
+        config.CreateMap<CreatePoliticalPartyDto, PoliticalParty>();
+        config.CreateMap<UpdatePoliticalPartyDto, PoliticalParty>();
+        config.CreateMap<PoliticalParty, PoliticalPartyResponseDto>();
     }
 );
 

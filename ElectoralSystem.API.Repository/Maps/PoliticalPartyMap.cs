@@ -16,6 +16,7 @@ namespace ElectoralSystem.API.Repository.Maps
 
             builder.Property(p => p.Name);
             builder.Property(p => p.Acronym);
+            builder.HasIndex(p => p.Acronym).IsUnique();
         }
     }
 }

@@ -10,7 +10,5 @@
         {
             LogMessage(FriendlyMessage);
         }
-
-
     }
 }

@@ -3,10 +3,10 @@ using ElectoralSystem.API.Core.DTOs;
 using ElectoralSystem.API.Core.Handlers;
 using ElectoralSystem.API.Filter;
 using ElectoralSystem.API.Repository.Entities;
-using ElectoralSystem.API.Repository.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ElectoralSystem.API.Controllers
@@ -32,8 +32,9 @@ namespace ElectoralSystem.API.Controllers
         {
             var middle = new GetAllPoliticalPartyMiddleData();
             var response = await _mediator.Send(middle);
+            var responseDto = _mapper.Map<IEnumerable<PoliticalPartyResponseDto>>(response);
             
-            return Ok(response);
+            return Ok(responseDto);
         }
 
 
@@ -42,20 +43,33 @@ namespace ElectoralSystem.API.Controllers
         {
             var middle = new GetIdPoliticalPartyMiddleData(guid);
             var response = await _mediator.Send(middle);
+            var responseDto = _mapper.Map<PoliticalPartyResponseDto>(response);
 
-            return Ok(response);
+            return Ok(responseDto);
         }
 
 
         [ServiceFilter(typeof(ValidatePoliticalPartyFilter))]
         [HttpPost]
-        public async Task<IActionResult> CreatePoliticalParty(PoliticalPartyDto politicalPartyDto)
+        public async Task<IActionResult> CreatePoliticalParty(CreatePoliticalPartyDto createPoliticalPartyDto)
         {
-            PoliticalParty politicalPartyInput = _mapper.Map<PoliticalParty>(politicalPartyDto);
+            var politicalPartyInput = _mapper.Map<PoliticalParty>(createPoliticalPartyDto);
             var middle = new CreatePoliticalPartyMiddleData(politicalPartyInput);
             var response = await _mediator.Send(middle);
+            var responseDto = _mapper.Map<PoliticalPartyResponseDto>(response);
 
-            return Ok(response);
+            return Ok(responseDto);
+        }
+
+        [ServiceFilter(typeof(ValidatePoliticalPartyFilter))]
+        [HttpPut]
+        public async Task<IActionResult> UpdatePoliticalParty(UpdatePoliticalPartyDto updatePoliticalPartyDto)
+        {
+            var politicalPartyInput = _mapper.Map<PoliticalParty>(updatePoliticalPartyDto);
+            var middle = new UpdatePoliticalPartyMiddleData(politicalPartyInput);
+            var response = await _mediator.Send(middle);
+
+            return Ok(new { rowsAffected = response });
         }
 
         [HttpDelete]
