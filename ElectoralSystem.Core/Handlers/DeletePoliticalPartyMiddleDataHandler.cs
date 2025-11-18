@@ -2,6 +2,7 @@
 using ElectoralSystem.API.Repository.Entities;
 using ElectoralSystem.API.Repository.Interfaces;
 using MediatR;
+using System.Linq;
 
 namespace ElectoralSystem.API.Core.Handlers
 {
@@ -15,15 +16,14 @@ namespace ElectoralSystem.API.Core.Handlers
         }
         public async Task<int> Handle(DeletePoliticalPartyMiddleData request, CancellationToken cancellationToken)
         {
-            var response =await _repository.GetAsync(x => x.Id == request._PoliticalParty.Id);
-               
+            var response = (await _repository.GetAsync(x => x.Id == request._PoliticalParty.Id)).FirstOrDefault();
 
             if (response is null)
             {
                 throw new PoliticalPartyIdNotFoundException(request._PoliticalParty.Id);
             }
 
-            return await _repository.DeleteAsync(request._PoliticalParty);
+            return await _repository.DeleteAsync(response);
         }
     }
 }
