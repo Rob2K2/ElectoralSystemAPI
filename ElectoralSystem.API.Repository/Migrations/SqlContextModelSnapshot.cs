@@ -105,7 +105,7 @@ namespace ElectoralSystem.API.Repository.Migrations
 
                     b.Property<string>("Acronym")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
