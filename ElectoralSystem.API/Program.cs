@@ -26,11 +26,13 @@ builder.Services.AddDbContext<SqlContext>(
     .UseSqlServer(builder.Configuration.GetConnectionString("CleanCodeString")));
 
 builder.Services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
+builder.Services.AddScoped<IPollingStationRepository, PollingStationRepository>();
 
 builder.Services.AddScoped<ElectoralSystem.API.Error.Logs.ILogger, Logger>();
 
 builder.Services.AddScoped<ErrorFilter>();
 builder.Services.AddScoped<ValidatePoliticalPartyFilter>();
+builder.Services.AddScoped<ValidatePollingStationFilter>();
 
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssemblies(typeof(CreatePoliticalPartyMiddleData).Assembly)
@@ -41,6 +43,9 @@ builder.Services.AddAutoMapper(config =>
         config.CreateMap<CreatePoliticalPartyDto, PoliticalParty>();
         config.CreateMap<UpdatePoliticalPartyDto, PoliticalParty>();
         config.CreateMap<PoliticalParty, PoliticalPartyResponseDto>();
+        config.CreateMap<CreatePollingStationDto, PollingStation>();
+        config.CreateMap<UpdatePollingStationDto, PollingStation>();
+        config.CreateMap<PollingStation, PollingStationResponseDto>();
     }
 );
 
