@@ -24,6 +24,10 @@ namespace ElectoralSystem.API.Repository.Maps
 
             builder.HasOne(p => p.PollingStation).WithMany().HasForeignKey(p => p.PollStationId);
             builder.HasOne(p => p.PoliticalParty).WithMany().HasForeignKey(p => p.PoliticalPartyId);
+
+            builder.HasIndex(p => new { p.PollStationId, p.PoliticalPartyId, p.RegisteredDate })
+                .IsUnique()
+                .HasDatabaseName("IX_PartyPollingResult_Unique_Station_Party_Date");
         }
     }
 }
