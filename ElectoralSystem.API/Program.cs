@@ -1,5 +1,6 @@
 using ElectoralSystem.API.Core.DTOs;
 using ElectoralSystem.API.Core.Handlers;
+using ElectoralSystem.API.Core.Services;
 using ElectoralSystem.API.Error.Logs;
 using ElectoralSystem.API.Filter;
 using ElectoralSystem.API.Repository.Context;
@@ -28,6 +29,8 @@ builder.Services.AddDbContext<SqlContext>(
 builder.Services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>();
 builder.Services.AddScoped<IPollingStationRepository, PollingStationRepository>();
 builder.Services.AddScoped<IPartyPollingResultRepository, PartyPollingResultRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<JwtService>();
 
 builder.Services.AddScoped<ElectoralSystem.API.Error.Logs.ILogger, Logger>();
 
@@ -51,6 +54,7 @@ builder.Services.AddAutoMapper(config =>
         config.CreateMap<CreatePartyPollingResultDto, PartyPollingResult>();
         config.CreateMap<UpdatePartyPollingResultDto, PartyPollingResult>();
         config.CreateMap<PartyPollingResult, PartyPollingResultResponseDto>();
+        config.CreateMap<UserDto, User>();
     }
 );
 

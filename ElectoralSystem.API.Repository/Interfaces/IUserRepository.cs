@@ -2,8 +2,8 @@
 
 namespace ElectoralSystem.API.Repository.Interfaces
 {
-    public interface IPoliticalPartyRepository : IBaseRepository<PoliticalParty>
+    public interface IUserRepository : IBaseRepository<User>
     {
-
+        Task<User?> GetByLoginAsync(string username);
     }
 }
