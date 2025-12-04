@@ -2,6 +2,7 @@ using ElectoralSystem.API.Core.DTOs;
 using ElectoralSystem.API.Core.Handlers;
 using ElectoralSystem.API.Core.Services;
 using ElectoralSystem.API.Error.Logs;
+using ElectoralSystem.API.Extensions;
 using ElectoralSystem.API.Filter;
 using ElectoralSystem.API.Repository.Context;
 using ElectoralSystem.API.Repository.Entities;
@@ -20,7 +21,7 @@ builder.Services.AddControllers(
 );
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddDbContext<SqlContext>(
     options => options
@@ -42,6 +43,8 @@ builder.Services.AddScoped<ValidatePartyPollingResultFilter>();
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssemblies(typeof(CreatePoliticalPartyMiddleData).Assembly)
 );
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddAutoMapper(config =>
     {
@@ -68,6 +71,8 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();

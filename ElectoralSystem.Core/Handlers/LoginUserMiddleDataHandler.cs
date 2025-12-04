@@ -19,7 +19,7 @@ namespace ElectoralSystem.API.Core.Handlers
         {
             var user = await _userRepository.GetByLoginAsync(request.LoginDto.Login);
 
-            if (user is null || !BCrypt.Net.BCrypt.Verify(request.LoginDto.Login, user.PasswordHash))
+            if (user is null || !BCrypt.Net.BCrypt.Verify(request.LoginDto.Password, user.PasswordHash))
             {
                 throw new InvalidCredentialException();
             }

@@ -18,7 +18,7 @@ namespace ElectoralSystem.API.Core.Services
         public string GenerateToken(string username)
         {
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"])
+                Encoding.UTF8.GetBytes(_config["Jwt:key"])
             );
 
             var credentials = new SigningCredentials(
@@ -29,7 +29,7 @@ namespace ElectoralSystem.API.Core.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: new[] { new Claim(ClaimTypes.Name, username) },
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(Convert.ToDouble(_config["Jwt:ExpireMinutes"])),
                 signingCredentials: credentials
             );
 

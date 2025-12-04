@@ -4,6 +4,7 @@ using ElectoralSystem.API.Core.Handlers;
 using ElectoralSystem.API.Filter;
 using ElectoralSystem.API.Repository.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ namespace ElectoralSystem.API.Controllers
         }
 
 
+        [Authorize]
         [ServiceFilter(typeof(ValidatePollingStationFilter))]
         [HttpPost]
         public async Task<IActionResult> CreatePollingStation(CreatePollingStationDto createPollingStationDto)
@@ -61,6 +63,7 @@ namespace ElectoralSystem.API.Controllers
             return Ok(responseDto);
         }
 
+        [Authorize]
         [ServiceFilter(typeof(ValidatePollingStationFilter))]
         [HttpPut]
         public async Task<IActionResult> UpdatePollingStation(UpdatePollingStationDto updatePollingStationDto)
@@ -72,6 +75,7 @@ namespace ElectoralSystem.API.Controllers
             return Ok(new { rowsAffected = response });
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeletePollingStation(PollingStation pollingStation)
         { 

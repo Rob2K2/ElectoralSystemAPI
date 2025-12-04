@@ -3,12 +3,14 @@ using ElectoralSystem.API.Core.DTOs;
 using ElectoralSystem.API.Core.Handlers;
 using ElectoralSystem.API.Repository.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace ElectoralSystem.API.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -33,6 +35,7 @@ namespace ElectoralSystem.API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto loginDto)
         { 
             var middle = new LoginUserMiddleData(loginDto);
