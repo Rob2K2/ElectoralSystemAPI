@@ -15,7 +15,7 @@ namespace ElectoralSystem.API.Core.Services
             _config = config;
         }
 
-        public string GenerateToken(string username)
+        public string GenerateToken(string username, Guid id)
         {
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:key"])
@@ -25,10 +25,15 @@ namespace ElectoralSystem.API.Core.Services
                 key, SecurityAlgorithms.HmacSha256
             );
 
+            var claims = new[] {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.NameIdentifier, id.ToString())
+                };
+
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
-                claims: new[] { new Claim(ClaimTypes.Name, username) },
+                claims: claims,
                 expires: DateTime.UtcNow.AddHours(Convert.ToDouble(_config["Jwt:ExpireMinutes"])),
                 signingCredentials: credentials
             );
