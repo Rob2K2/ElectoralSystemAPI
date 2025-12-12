@@ -1,5 +1,6 @@
 using ElectoralSystem.API.Core.DTOs;
 using ElectoralSystem.API.Core.Handlers;
+using ElectoralSystem.API.Core.Interfaces;
 using ElectoralSystem.API.Core.Services;
 using ElectoralSystem.API.Error.Logs;
 using ElectoralSystem.API.Extensions;
@@ -8,6 +9,7 @@ using ElectoralSystem.API.Repository.Context;
 using ElectoralSystem.API.Repository.Entities;
 using ElectoralSystem.API.Repository.Interfaces;
 using ElectoralSystem.API.Repository.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +33,15 @@ builder.Services.AddScoped<IPoliticalPartyRepository, PoliticalPartyRepository>(
 builder.Services.AddScoped<IPollingStationRepository, PollingStationRepository>();
 builder.Services.AddScoped<IPartyPollingResultRepository, PartyPollingResultRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IReadRepository, ReadRepository>();
+builder.Services.AddScoped<IChangeHistoryRepository, ChangeHistoryRepository>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+
 builder.Services.AddSingleton<JwtService>();
+
+
+
 
 builder.Services.AddScoped<ElectoralSystem.API.Error.Logs.ILogger, Logger>();
 
@@ -42,6 +52,7 @@ builder.Services.AddScoped<ValidatePartyPollingResultFilter>();
 
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssemblies(typeof(CreatePoliticalPartyMiddleData).Assembly)
+    .AddBehavior(typeof(IPipelineBehavior<,>), typeof(ChangeHistoryBehavior<,>))
 );
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -58,6 +69,7 @@ builder.Services.AddAutoMapper(config =>
         config.CreateMap<UpdatePartyPollingResultDto, PartyPollingResult>();
         config.CreateMap<PartyPollingResult, PartyPollingResultResponseDto>();
         config.CreateMap<UserDto, User>();
+        config.CreateMap<DeletePartyPollingResultDto, PartyPollingResult>();
     }
 );
 

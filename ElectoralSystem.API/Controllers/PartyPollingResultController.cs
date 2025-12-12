@@ -4,6 +4,7 @@ using ElectoralSystem.API.Core.Handlers;
 using ElectoralSystem.API.Filter;
 using ElectoralSystem.API.Repository.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace ElectoralSystem.API.Controllers
 
 
         [ServiceFilter(typeof(ValidatePartyPollingResultFilter))]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreatePartyPollingResult(CreatePartyPollingResultDto createPartyPollingResultDto)
         {
@@ -62,6 +64,7 @@ namespace ElectoralSystem.API.Controllers
         }
 
         [ServiceFilter(typeof(ValidatePartyPollingResultFilter))]
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdatePartyPollingResult(UpdatePartyPollingResultDto updatePartyPollingResultDto)
         {
@@ -73,9 +76,11 @@ namespace ElectoralSystem.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePartyPollingResult(PartyPollingResult partyPollingResult)
-        { 
-            var middle = new DeletePartyPollingResultMiddleData(partyPollingResult);
+        [Authorize]
+        public async Task<IActionResult> DeletePartyPollingResult(DeletePartyPollingResultDto deletePartyPollingResultDto)
+        {
+            var partyPollingResultInput = _mapper.Map<PartyPollingResult>(deletePartyPollingResultDto);
+            var middle = new DeletePartyPollingResultMiddleData(partyPollingResultInput);
             var response = await _mediator.Send(middle);
             return Ok(response);
         }
