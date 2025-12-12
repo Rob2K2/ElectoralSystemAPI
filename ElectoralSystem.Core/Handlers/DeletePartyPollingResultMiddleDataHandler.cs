@@ -1,8 +1,6 @@
 using ElectoralSystem.API.Error.Bussiness;
-using ElectoralSystem.API.Repository.Entities;
 using ElectoralSystem.API.Repository.Interfaces;
 using MediatR;
-using System.Linq;
 
 namespace ElectoralSystem.API.Core.Handlers
 {
@@ -17,11 +15,11 @@ namespace ElectoralSystem.API.Core.Handlers
 
         public async Task<int> Handle(DeletePartyPollingResultMiddleData request, CancellationToken cancellationToken)
         {
-            var response = (await _repository.GetAsync(x => x.Id == request._PartyPollingResult.Id)).FirstOrDefault();
+            var response = (await _repository.GetAsync(x => x.Id == request.PartyPollingResult.Id)).FirstOrDefault();
 
             if (response is null)
             {
-                throw new PartyPollingResultIdNotFoundException(request._PartyPollingResult.Id);
+                throw new PartyPollingResultIdNotFoundException(request.PartyPollingResult.Id);
             }
 
             return await _repository.DeleteAsync(response);

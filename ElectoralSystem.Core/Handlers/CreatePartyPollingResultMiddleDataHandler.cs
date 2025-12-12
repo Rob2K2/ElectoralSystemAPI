@@ -1,11 +1,11 @@
 using ElectoralSystem.API.Core.Handlers;
+using ElectoralSystem.API.Core.Interfaces;
 using ElectoralSystem.API.Error;
 using ElectoralSystem.API.Error.Bussiness;
 using ElectoralSystem.API.Error.Logs;
 using ElectoralSystem.API.Repository.Entities;
 using ElectoralSystem.API.Repository.Interfaces;
 using MediatR;
-using System.Linq;
 
 namespace ElectoralSystem.Core.Handlers
 {

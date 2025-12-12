@@ -24,7 +24,7 @@ namespace ElectoralSystem.API.Core.Handlers
                 throw new InvalidCredentialException();
             }
 
-            return _jwtService.GenerateToken(user.Login);
+            return _jwtService.GenerateToken(user.Login, user.Id);
         }
     }
 }
